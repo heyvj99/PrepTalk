@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Pause, Play, RotateCcw, EyeOff } from "lucide-react";
 
 interface TimerProps {
   duration: number; // in seconds
@@ -12,13 +13,20 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Reset timer on duration change
   useEffect(() => {
     setTimeLeft(duration);
     setPaused(false);
-    if (intervalRef.current) clearInterval(intervalRef.current);
+  }, [duration]);
+
+  // Handle timer interval
+  useEffect(() => {
+    if (paused) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      return;
+    }
     intervalRef.current = setInterval(() => {
       setTimeLeft((prev) => {
-        if (paused) return prev;
         if (prev <= 1) {
           clearInterval(intervalRef.current!);
           onComplete();
@@ -31,7 +39,7 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
     // eslint-disable-next-line
-  }, [duration, paused]);
+  }, [paused, onComplete]);
 
   const percent = (timeLeft / duration) * 100;
 
@@ -46,24 +54,16 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
         <div className="flex gap-2">
           <button onClick={handlePause} className="p-1" title="Pause/Resume">
             {paused ? (
-              <span role="img" aria-label="play">
-                ▶️
-              </span>
+              <Play className="w-5 h-5" />
             ) : (
-              <span role="img" aria-label="pause">
-                ⏸️
-              </span>
+              <Pause className="w-5 h-5" />
             )}
           </button>
           <button onClick={handleReset} className="p-1" title="Reset">
-            <span role="img" aria-label="reset">
-              🔄
-            </span>
+            <RotateCcw className="w-5 h-5" />
           </button>
           <button onClick={onSkip} className="p-1" title="Skip">
-            <span role="img" aria-label="skip">
-              👁️‍🗨️
-            </span>
+            <EyeOff className="w-5 h-5" />
           </button>
         </div>
       </div>
