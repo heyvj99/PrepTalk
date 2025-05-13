@@ -47,35 +47,48 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
   const handleReset = () => setTimeLeft(duration);
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <span className="text-blue-700 font-semibold text-sm mb-1">Timer</span>
+    <div className="w-full flex flex-col items-center border-4 border-black bg-white p-4">
+      <span className="text-blue-700 font-extrabold text-xs mb-1 uppercase tracking-wide">
+        Timer
+      </span>
       <div className="flex items-center justify-between w-full mb-2">
-        <span className="text-black font-medium text-base">{phase}</span>
+        <span className="text-black font-extrabold text-base uppercase">
+          {phase}
+        </span>
         <div className="flex gap-2">
-          <button onClick={handlePause} className="p-1" title="Pause/Resume">
+          <button
+            onClick={handlePause}
+            className="p-1 border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
+            title="Pause/Resume"
+          >
             {paused ? (
               <Play className="w-5 h-5" />
             ) : (
               <Pause className="w-5 h-5" />
             )}
           </button>
-          <button onClick={handleReset} className="p-1" title="Reset">
+          <button
+            onClick={handleReset}
+            className="p-1 border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
+            title="Reset"
+          >
             <RotateCcw className="w-5 h-5" />
           </button>
-          <button onClick={onSkip} className="p-1" title="Skip">
+          <button
+            onClick={onSkip}
+            className="p-1 border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
+            title="Skip"
+          >
             <EyeOff className="w-5 h-5" />
           </button>
         </div>
       </div>
-      <div className="text-5xl font-mono font-bold tracking-widest mb-2">
+      <div className="text-5xl font-mono font-extrabold tracking-widest mb-2 text-black">
         {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
         {String(timeLeft % 60).padStart(2, "0")}
       </div>
-      <div className="w-full h-3 bg-gray-200 rounded">
-        <div
-          className="h-3 bg-blue-600 rounded transition-all"
-          style={{ width: `${percent}%` }}
-        />
+      <div className="w-full h-3 bg-white border-2 border-black">
+        <div className="h-3 bg-blue-600" style={{ width: `${percent}%` }} />
       </div>
     </div>
   );

@@ -8,14 +8,15 @@ import {
   ActivityHistoryProvider,
   useActivityHistory,
 } from "./components/ActivityHistoryContext";
+import { History, Settings as SettingsIcon } from "lucide-react";
 
 function Layout() {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-neutral-100 flex flex-col">
       {/* Top bar */}
-      <div className="flex justify-between items-center px-4 py-2 border-b bg-white shadow-sm">
-        <span className="font-bold text-xl tracking-tight">
+      <div className="flex justify-between items-center px-4 py-2 border-b-4 border-black bg-white">
+        <span className="font-extrabold text-2xl tracking-tight text-black">
           Interview Practice
         </span>
         <div className="flex gap-2">
@@ -23,21 +24,17 @@ function Layout() {
             variant="ghost"
             size="icon"
             onClick={() => navigate("/history")}
-            className="text-2xl"
+            className="text-2xl border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
           >
-            <span role="img" aria-label="activity">
-              ⏱️
-            </span>
+            <History className="h-6 w-6" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate("/settings")}
-            className="text-2xl"
+            className="text-2xl border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
           >
-            <span role="img" aria-label="settings">
-              ⚙️
-            </span>
+            <SettingsIcon className="h-6 w-6" />
           </Button>
         </div>
       </div>
@@ -112,18 +109,18 @@ function QuestionScreen() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <div className="bg-white border border-gray-300 rounded-lg shadow-lg w-full max-w-3xl flex flex-row overflow-hidden">
+      <div className="bg-white border-4 border-black w-full max-w-3xl flex flex-row overflow-hidden">
         {/* Question Section */}
-        <div className="flex-1 flex flex-col justify-center p-8 min-h-[260px]">
-          <span className="text-blue-700 font-semibold text-lg mb-2">
+        <div className="flex-1 flex flex-col justify-center p-8 min-h-[260px] border-r-4 border-black">
+          <span className="text-blue-700 font-extrabold text-lg mb-2 uppercase tracking-wide">
             Question
           </span>
-          <p className="text-3xl font-light leading-snug text-left">
+          <p className="text-3xl font-extrabold leading-snug text-left text-black">
             {questions[questionIdx]}
           </p>
         </div>
         {/* Timer Section */}
-        <div className="w-64 border-l border-gray-200 bg-neutral-50 flex flex-col items-center justify-center p-8">
+        <div className="w-64 bg-neutral-100 flex flex-col items-center justify-center p-8">
           <Timer
             key={key}
             duration={
@@ -139,14 +136,14 @@ function QuestionScreen() {
       <div className="flex w-full max-w-3xl mt-6">
         <Button
           variant="secondary"
-          className="flex-1 rounded-none rounded-l-lg text-2xl py-4"
+          className="flex-1 border-4 border-black rounded-none text-2xl py-4 font-extrabold bg-white hover:bg-neutral-200 text-black"
           onClick={goToPrev}
         >
           &larr;
         </Button>
         <Button
           variant="secondary"
-          className="flex-1 rounded-none rounded-r-lg text-2xl py-4"
+          className="flex-1 border-4 border-black rounded-none text-2xl py-4 font-extrabold bg-white hover:bg-neutral-200 text-black"
           onClick={goToNext}
         >
           &rarr;
