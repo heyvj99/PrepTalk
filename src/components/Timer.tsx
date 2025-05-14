@@ -65,27 +65,32 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center border-0 border-black p-5">
-      <div className="flex items-center justify-between w-full mb-2">
+    <div className="w-full h-full flex flex-col gap-2 items-center justify-between border-0 border-black p-5">
+      <div className="flex items-start justify-start w-full mb-2">
         <span
-          className={`font-bold text-lg uppercase ${
-            phase === "Thinking" ? "text-orange-500" : "text-blue-700"
+          className={`font-bold text-sm uppercase ${
+            phase === "Thinking" ? "text-green-700" : "text-blue-700"
           }`}
         >
-          {phase === "Thinking" ? "Thinking Time" : "Answering Time"}
+          {phase === "Thinking" ? "Think..." : "Answer"}
         </span>
       </div>
-      <div className="text-5xl font-mono font-extrabold tracking-widest mb-2 text-black">
-        {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
-        {String(timeLeft % 60).padStart(2, "0")}
+      <div className="w-full flex flex-col items-center justify-center">
+        <div className="text-5xl font-mono font-medium tracking-wide mb-2 text-black">
+          {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
+          {String(timeLeft % 60).padStart(2, "0")}
+        </div>
+        <div className="w-full h-3 border-2 border-black">
+          <div
+            className="h-full bg-blue-600"
+            style={{ width: `${percent}%` }}
+          />
+        </div>
       </div>
-      <div className="w-full h-3 bg-white border-2 border-black">
-        <div className="h-full bg-blue-600" style={{ width: `${percent}%` }} />
-      </div>
-      <div className="flex gap-2">
+      <div className="flex gap-[2px] w-full">
         <button
           onClick={handlePause}
-          className="p-1 border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
+          className="p-1 mx-auto flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
           title="Pause/Resume"
         >
           {paused ? (
@@ -96,14 +101,14 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
         </button>
         <button
           onClick={handleReset}
-          className="p-1 border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
+          className="p-1 flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
           title="Reset"
         >
           <RotateCcw className="w-5 h-5" />
         </button>
         <button
           onClick={handleSkip}
-          className="p-1 border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
+          className="p-1 flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
           title={phase === "Thinking" ? "Skip to Answering" : "Reset to 00:00"}
         >
           <SkipForward className="w-5 h-5" />
