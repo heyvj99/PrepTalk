@@ -79,7 +79,7 @@ export function QuestionScreen() {
           </p>
         </div>
         {/* Timer Section */}
-        <div className="w-64 bg-neutral-100 flex flex-col items-center justify-center p-8">
+        <div className="w-64 bg-neutral-100 flex flex-col items-center justify-center p-2">
           <Timer
             key={key}
             duration={
