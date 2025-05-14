@@ -4,6 +4,7 @@ import { Timer } from "./Timer";
 import { useSettings } from "./SettingsContext";
 import { useActivityHistory } from "./ActivityHistoryContext";
 import { questions } from "../data/questions";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export function QuestionScreen() {
   const [questionIdx, setQuestionIdx] = useState(() =>
@@ -70,16 +71,18 @@ export function QuestionScreen() {
     <div className="w-full flex flex-col items-center justify-center">
       <div className="bg-white border-4 border-black w-full max-w-3xl flex flex-row overflow-hidden">
         {/* Question Section */}
-        <div className="flex-1 flex flex-col justify-center p-8 min-h-[260px] border-r-4 border-black">
-          <span className="text-blue-700 font-extrabold text-lg mb-2 uppercase tracking-wide">
+        <div className="flex-1 flex flex-col justify-start p-8 min-h-[260px] border-r-4 border-black">
+          <span className="text-blue-700 font-bold text-lg mb-2 uppercase tracking-wide">
             Question
           </span>
-          <p className="text-3xl font-extrabold leading-snug text-left text-black">
-            {questions[questionIdx]}
-          </p>
+          <div className="flex flec-col justify-center items-start">
+            <p className="text-4xl font-bold leading-snug text-left text-black">
+              {questions[questionIdx]}
+            </p>
+          </div>
         </div>
         {/* Timer Section */}
-        <div className="w-64 bg-neutral-100 flex flex-col items-center justify-center p-2">
+        <div className="w-64 bg-neutral-100 flex flex-col items-start justify-center p-0">
           <Timer
             key={key}
             duration={
@@ -92,20 +95,20 @@ export function QuestionScreen() {
         </div>
       </div>
       {/* Navigation */}
-      <div className="flex w-full max-w-3xl mt-6">
+      <div className="flex gap-[2px] w-full max-w-3xl mt-6">
         <Button
           variant="secondary"
-          className="flex-1 border-4 border-black rounded-none text-2xl py-4 font-extrabold bg-white hover:bg-neutral-200 text-black"
+          className="flex-1 border-4 border-black rounded-none text-2xl h-[44px] font-extrabold bg-black hover:bg-neutral-900 text-white"
           onClick={goToPrev}
         >
-          &larr;
+          <ChevronLeft className="w-8 h-8" />
         </Button>
         <Button
           variant="secondary"
-          className="flex-1 border-4 border-black rounded-none text-2xl py-4 font-extrabold bg-white hover:bg-neutral-200 text-black"
+          className="flex-1 border-4 border-black rounded-none text-2xl h-[44px] font-extrabold bg-black hover:bg-neutral-900 text-white"
           onClick={goToNext}
         >
-          &rarr;
+          <ChevronRight className="w-8 h-8" />
         </Button>
       </div>
     </div>

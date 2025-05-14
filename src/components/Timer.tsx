@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play, RotateCcw, EyeOff } from "lucide-react";
+import { Pause, Play, RotateCcw, SkipForward } from "lucide-react";
 
 interface TimerProps {
   duration: number; // in seconds
@@ -43,14 +43,32 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
 
   const percent = (timeLeft / duration) * 100;
 
-  const handlePause = () => setPaused((p) => !p);
+  const handlePause = () => {
+    if (timeLeft === 0) {
+      // If timer is at 0, reset to full duration when resuming
+      setTimeLeft(duration);
+    }
+    setPaused((p) => !p);
+  };
+
   const handleReset = () => setTimeLeft(duration);
 
+  const handleSkip = () => {
+    if (phase === "Thinking") {
+      onSkip();
+    } else {
+      // In answering phase, reset timer to 0 and pause
+      setTimeLeft(0);
+      setPaused(true);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    }
+  };
+
   return (
-    <div className="w-full flex flex-col gap-2 items-center border-0 border-black bg-white p-2">
+    <div className="w-full flex flex-col gap-2 items-center border-0 border-black p-5">
       <div className="flex items-center justify-between w-full mb-2">
         <span
-          className={`font-extrabold text-base uppercase ${
+          className={`font-bold text-lg uppercase ${
             phase === "Thinking" ? "text-orange-500" : "text-blue-700"
           }`}
         >
@@ -84,11 +102,11 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
           <RotateCcw className="w-5 h-5" />
         </button>
         <button
-          onClick={onSkip}
+          onClick={handleSkip}
           className="p-1 border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
-          title="Skip"
+          title={phase === "Thinking" ? "Skip to Answering" : "Reset to 00:00"}
         >
-          <EyeOff className="w-5 h-5" />
+          <SkipForward className="w-5 h-5" />
         </button>
       </div>
     </div>
