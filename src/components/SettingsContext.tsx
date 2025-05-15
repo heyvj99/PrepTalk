@@ -16,16 +16,27 @@ const SETTINGS_KEY = "interview_settings";
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [thinkingDuration, setThinkingDuration] = useState(30);
   const [answeringDuration, setAnsweringDuration] = useState(120);
-  const [topic, setTopic] = useState("all");
+  const [topic, _setTopic] = useState("all");
+
+  const setTopic = (newTopic: string) => {
+    _setTopic(newTopic);
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem(SETTINGS_KEY);
     if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed.thinkingDuration) setThinkingDuration(parsed.thinkingDuration);
-      if (parsed.answeringDuration)
-        setAnsweringDuration(parsed.answeringDuration);
-      if (parsed.topic) setTopic(parsed.topic);
+      try {
+        const parsed = JSON.parse(saved);
+        if (typeof parsed.thinkingDuration === "number")
+          setThinkingDuration(parsed.thinkingDuration);
+        if (typeof parsed.answeringDuration === "number")
+          setAnsweringDuration(parsed.answeringDuration);
+        if (typeof parsed.topic === "string") {
+          setTopic(parsed.topic);
+        }
+      } catch (e) {
+        localStorage.removeItem(SETTINGS_KEY);
+      }
     }
   }, []);
 

@@ -13,45 +13,65 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
   const [paused, setPaused] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Reset timer on duration change
+  // Reset timer and clear old interval when duration changes
   useEffect(() => {
     setTimeLeft(duration);
     setPaused(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
   }, [duration]);
 
-  // Handle timer interval
+  // Handle timer interval for counting down
   useEffect(() => {
-    if (paused) {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+    if (paused || timeLeft <= 0) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
       return;
     }
-    intervalRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current!);
-          onComplete();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-    // eslint-disable-next-line
-  }, [paused, onComplete]);
 
-  const percent = (timeLeft / duration) * 100;
+    intervalRef.current = setInterval(() => {
+      setTimeLeft((prev) => prev - 1); // Only update timeLeft here
+    }, 1000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [paused, timeLeft]); // Reruns if paused state changes or timeLeft changes (to stop at 0)
+
+  // Effect to call onComplete when timeLeft reaches 0
+  useEffect(() => {
+    if (timeLeft === 0) {
+      // Ensure any lingering interval is cleared (belt and suspenders)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      onComplete(); // Called safely in an effect after timeLeft has updated
+    }
+  }, [timeLeft, onComplete]); // Reruns if timeLeft changes or onComplete prop changes
+
+  const percent = duration > 0 ? (timeLeft / duration) * 100 : 0;
 
   const handlePause = () => {
-    if (timeLeft === 0) {
-      // If timer is at 0, reset to full duration when resuming
+    if (timeLeft === 0 && duration > 0) {
       setTimeLeft(duration);
     }
     setPaused((p) => !p);
   };
 
-  const handleReset = () => setTimeLeft(duration);
+  const handleReset = () => {
+    if (duration > 0) {
+      setTimeLeft(duration);
+      setPaused(false);
+    }
+  };
 
   const handleSkip = () => {
     if (phase === "Thinking") {

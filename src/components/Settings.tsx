@@ -16,10 +16,10 @@ const ANSWERING_OPTIONS = [
 
 const TOPIC_OPTIONS = [
   { label: "All", value: "all" },
-  { label: "Previous Experience", value: "previous" },
-  { label: "Behavioral Questions", value: "behavioral" },
-  { label: "Situational Questions", value: "situational" },
-  { label: "Culture Fit Questions", value: "culture" },
+  { label: "Previous Experience", value: "Previous Experience" },
+  { label: "Behavioral Questions", value: "Behavioral Question" },
+  { label: "Situational Questions", value: "Situational Question" },
+  { label: "Culture Fit Questions", value: "Culture Fit" },
 ];
 
 export function SettingsModal({
@@ -66,7 +66,7 @@ export function SettingsModal({
 
   return (
     <div
-      className="fixed z-50 flex items-center justify-center bg-black bg-opacity-10"
+      className="fixed p-4 z-50 flex items-center justify-center"
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-title"

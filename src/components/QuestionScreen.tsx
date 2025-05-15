@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Timer } from "./Timer";
 import { useSettings } from "./SettingsContext";
-// import { useActivityHistory } from "./ActivityHistoryContext";
 import { questions as allQuestions } from "../data/questions";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -72,27 +71,35 @@ export function QuestionScreen() {
 
   const currentQuestion = filteredQuestions[questionIdx];
 
+  // TEMPORARY GUARD to prevent crash and show a message
+  if (!currentQuestion) {
+    return (
+      <div className="p-5 text-red-500">
+        Error: No question found for the selected topic ('{topic}') at index{" "}
+        {questionIdx}. Please check your topic filters and question data.
+      </div>
+    );
+  }
+
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <div className="border-2 border-black w-full h-[40vh] max-w-3xl flex flex-row overflow-hidden">
+      <div className="border-2 border-black w-full h-[40vh] max-w-3xl flex flex-row max-[650px]:flex-col max-[650px]:h-[70vh] overflow-hidden">
         {/* Question Section */}
-        <div className="flex-1 flex flex-col justify-start p-5 min-h-[260px] border-r-2 border-black">
+        <div className="flex-1 max-[650px]:flex-col flex flex-col justify-start p-5 min-h-[260px] max-[650px]:min-h-0 max-[650px]:h-auto border-r-2 border-black max-[650px]:border-r-0 max-[650px]:border-b-2">
           <span className="text-blue-700 font-bold text-sm mb-2 uppercase tracking-wide">
             Question
           </span>
           <div className="flex flex-col justify-center items-start">
-            <p className="text-4xl font-bold leading-snug text-left text-black">
+            <p className="text-4xl max-[500px]:text-3xl font-bold leading-snug text-left text-black">
               {currentQuestion.text}
             </p>
-            <span className="mt-2 px-3 py-1 text-xs bg-neutral-200 text-neutral-700 font-semibold uppercase tracking-wide">
-              {currentQuestion.topic
-                .replace(/^(.)/, (c) => c.toUpperCase())
-                .replace(/_/g, " ")}
+            <span className="mt-2 px-3 py-1 text-xs bg-neutral-200 text-neutral-700 font-semibold tracking-wide">
+              {currentQuestion.topic.replace(/_/g, " ")}
             </span>
           </div>
         </div>
         {/* Timer Section */}
-        <div className="w-64 bg-neutral-100 flex flex-col items-start justify-start p-0">
+        <div className="w-[33%] max-[650px]:w-full max-[650px]:h-auto bg-neutral-100 flex flex-col items-start justify-start p-0">
           {!noAnswering && (
             <Timer
               key={key}
