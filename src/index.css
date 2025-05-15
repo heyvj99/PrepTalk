@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Coiny&family=Geologica:wght@100..900&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -40,6 +43,7 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --tw-color-black: oklch(0.24 0.0418 184.31);
 }
 
 @theme inline {
@@ -78,6 +82,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-black: var(--tw-color-black);
+  --font-mono: "Azeret Mono", "Space Mono", ui-monospace, "Courier New",
+    monospace;
 }
 
 .dark {

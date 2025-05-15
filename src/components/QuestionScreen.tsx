@@ -84,7 +84,7 @@ export function QuestionScreen() {
             <p className="text-4xl font-bold leading-snug text-left text-black">
               {currentQuestion.text}
             </p>
-            <span className="mt-2 px-3 py-1 text-xs rounded-full bg-neutral-200 text-neutral-700 font-semibold uppercase tracking-wide">
+            <span className="mt-2 px-3 py-1 text-xs bg-neutral-200 text-neutral-700 font-semibold uppercase tracking-wide">
               {currentQuestion.topic
                 .replace(/^(.)/, (c) => c.toUpperCase())
                 .replace(/_/g, " ")}

@@ -72,7 +72,7 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
             phase === "Thinking" ? "text-amber-600" : "text-blue-700"
           }`}
         >
-          {phase === "Thinking" ? "Think..." : "Answer"}
+          {phase === "Thinking" ? "Think" : "Answer"}
         </span>
       </div>
       <div className="w-full flex flex-col items-center justify-center">
