@@ -39,10 +39,10 @@ export function SettingsModal({
   initialAnswering?: number;
   initialTopic?: string;
 }) {
-  const { setThinkingDuration, setAnsweringDuration } = useSettings();
+  const { setThinkingDuration, setAnsweringDuration, topic, setTopic } =
+    useSettings();
   const [thinking, setThinking] = useState<number>(initialThinking);
   const [answering, setAnswering] = useState<number>(initialAnswering);
-  const [topic, setTopic] = useState<string>(initialTopic);
 
   // If answering is set to none, force thinking to none
   const handleAnsweringChange = (val: number) => {

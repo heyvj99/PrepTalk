@@ -69,7 +69,7 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
       <div className="flex items-start justify-start w-full mb-2">
         <span
           className={`font-bold text-sm uppercase ${
-            phase === "Thinking" ? "text-green-700" : "text-blue-700"
+            phase === "Thinking" ? "text-amber-600" : "text-blue-700"
           }`}
         >
           {phase === "Thinking" ? "Think..." : "Answer"}
@@ -82,7 +82,9 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
         </div>
         <div className="w-full h-3 border-2 border-black">
           <div
-            className="h-full bg-blue-600"
+            className={`h-full ${
+              phase === "Thinking" ? "bg-amber-500" : "bg-blue-600"
+            }`}
             style={{ width: `${percent}%` }}
           />
         </div>

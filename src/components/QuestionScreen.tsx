@@ -1,22 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Timer } from "./Timer";
 import { useSettings } from "./SettingsContext";
-import { useActivityHistory } from "./ActivityHistoryContext";
-import { questions } from "../data/questions";
-import { ArrowBigRight, ArrowLeft, ArrowRight } from "lucide-react";
+// import { useActivityHistory } from "./ActivityHistoryContext";
+import { questions as allQuestions } from "../data/questions";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export function QuestionScreen() {
-  const [questionIdx, setQuestionIdx] = useState(() =>
-    Math.floor(Math.random() * questions.length)
-  );
-  const { thinkingDuration, answeringDuration } = useSettings();
-  const { addEntry } = useActivityHistory();
+  const { thinkingDuration, answeringDuration, topic } = useSettings();
+  const [questionIdx, setQuestionIdx] = useState(0);
   const [startTime, setStartTime] = useState(() => new Date());
 
   // Treat 0 as 'none' for both durations
   const noAnswering = !answeringDuration;
   const noThinking = !thinkingDuration;
+
+  // Filter questions by topic
+  const filteredQuestions =
+    topic && topic !== "all"
+      ? allQuestions.filter((q) => q.topic === topic)
+      : allQuestions;
 
   // Determine initial phase
   const initialPhase: "thinking" | "answering" = noThinking
@@ -25,46 +28,49 @@ export function QuestionScreen() {
   const [phase, setPhase] = useState<"thinking" | "answering">(initialPhase);
   const [key, setKey] = useState(0); // for resetting timer
 
+  // Reset questionIdx and phase when topic changes
+  useEffect(() => {
+    setQuestionIdx(0);
+    setPhase(noThinking ? "answering" : "thinking");
+    setKey((k) => k + 1);
+    setStartTime(new Date());
+    // eslint-disable-next-line
+  }, [topic, thinkingDuration, answeringDuration]);
+
+  // No logging in activity history
   const handleTimerComplete = () => {
     if (phase === "thinking") {
       setPhase("answering");
       setKey((k) => k + 1);
-    } else {
-      // Log activity when answering phase ends
-      addEntry({
-        question: questions[questionIdx],
-        startTime: startTime.toISOString(),
-        endTime: new Date().toISOString(),
-      });
     }
   };
 
+  // Only phase change, no addEntry here
   const handleSkip = () => {
     if (phase === "thinking") {
       setPhase("answering");
       setKey((k) => k + 1);
-    } else {
-      // Optionally log activity on skip
-      addEntry({
-        question: questions[questionIdx],
-        startTime: startTime.toISOString(),
-        endTime: new Date().toISOString(),
-      });
     }
   };
 
+  // No logging in goToPrev
   const goToPrev = () => {
     setPhase(noThinking ? "answering" : "thinking");
-    setQuestionIdx((idx) => (idx - 1 + questions.length) % questions.length);
+    setQuestionIdx(
+      (idx) => (idx - 1 + filteredQuestions.length) % filteredQuestions.length
+    );
     setKey((k) => k + 1);
     setStartTime(new Date());
   };
+  //
   const goToNext = () => {
     setPhase(noThinking ? "answering" : "thinking");
-    setQuestionIdx((idx) => (idx + 1) % questions.length);
+    setQuestionIdx((idx) => (idx + 1) % filteredQuestions.length);
     setKey((k) => k + 1);
     setStartTime(new Date());
   };
+
+  const currentQuestion = filteredQuestions[questionIdx];
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
@@ -76,8 +82,13 @@ export function QuestionScreen() {
           </span>
           <div className="flex flex-col justify-center items-start">
             <p className="text-4xl font-bold leading-snug text-left text-black">
-              {questions[questionIdx]}
+              {currentQuestion.text}
             </p>
+            <span className="mt-2 px-3 py-1 text-xs rounded-full bg-neutral-200 text-neutral-700 font-semibold uppercase tracking-wide">
+              {currentQuestion.topic
+                .replace(/^(.)/, (c) => c.toUpperCase())
+                .replace(/_/g, " ")}
+            </span>
           </div>
         </div>
         {/* Timer Section */}

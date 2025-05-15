@@ -15,14 +15,6 @@ export function Layout() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/history")}
-            className="text-2xl border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
-          >
-            <History className="h-6 w-6" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
             onClick={() => navigate("/settings")}
             className="text-2xl border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
           >

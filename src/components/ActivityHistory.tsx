@@ -1,55 +1,81 @@
-import { useActivityHistory } from "./ActivityHistoryContext";
+import React from "react";
+import { History, Settings as SettingsIcon } from "lucide-react";
+import { questions } from "../data/questions";
 
-export function ActivityHistory() {
-  const { history, clearHistory } = useActivityHistory();
+interface ActivityHistoryModalProps {
+  onClose: () => void;
+  onSettings: () => void;
+  onHistory: () => void;
+}
 
+export function ActivityHistoryModal({
+  onClose,
+  onSettings,
+  onHistory,
+}: ActivityHistoryModalProps) {
   return (
-    <div className="flex flex-col items-center justify-center h-full p-8">
-      <h2 className="text-2xl font-semibold mb-4">Activity History</h2>
-      <div className="bg-white rounded shadow p-6 w-full max-w-2xl text-center">
-        {history.length === 0 ? (
-          <p>No activity yet.</p>
-        ) : (
-          <>
-            <table className="w-full text-left mb-4">
-              <thead>
-                <tr>
-                  <th className="py-2 px-2">Question</th>
-                  <th className="py-2 px-2">Start</th>
-                  <th className="py-2 px-2">End</th>
-                  <th className="py-2 px-2">Duration</th>
-                </tr>
-              </thead>
-              <tbody>
-                {history.map((entry, i) => {
-                  const start = new Date(entry.startTime);
-                  const end = new Date(entry.endTime);
-                  const duration = Math.round(
-                    (end.getTime() - start.getTime()) / 1000
-                  );
-                  return (
-                    <tr key={i} className="border-t">
-                      <td className="py-2 px-2">{entry.question}</td>
-                      <td className="py-2 px-2 text-xs">
-                        {start.toLocaleString()}
-                      </td>
-                      <td className="py-2 px-2 text-xs">
-                        {end.toLocaleString()}
-                      </td>
-                      <td className="py-2 px-2">{duration}s</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-10"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="bg-white border-2 border-black shadow-xl rounded-none w-full max-w-2xl p-0 relative">
+        {/* Top Navigation Bar */}
+        <div className="flex items-center justify-between border-b-2 border-black px-0 py-0 h-12">
+          <div className="flex-1" />
+          <div className="flex gap-0 items-center">
             <button
-              className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded border border-red-300"
-              onClick={clearHistory}
+              className="h-12 w-12 flex items-center justify-center bg-black text-white border-l-2 border-black focus:outline-none"
+              aria-label="History"
+              onClick={onHistory}
             >
-              Clear History
+              <History className="w-6 h-6" />
             </button>
-          </>
-        )}
+            <button
+              className="h-12 w-12 flex items-center justify-center bg-white text-black border-l-2 border-black focus:outline-none"
+              aria-label="Settings"
+              onClick={onSettings}
+            >
+              <SettingsIcon className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-8 py-4 border-b border-black">
+          <span className="font-semibold text-lg text-black text-left">
+            All questions for this session
+          </span>
+          <button
+            aria-label="Close"
+            onClick={onClose}
+            className="text-3xl font-bold text-black hover:text-neutral-600 focus:outline-none"
+          >
+            &times;
+          </button>
+        </div>
+        {/* Question List */}
+        <div className="px-8 py-4 max-h-[60vh] overflow-y-auto">
+          <ul className="flex flex-col gap-0">
+            {questions.map((q, i) => (
+              <React.Fragment key={i}>
+                <li className="flex items-center py-3">
+                  <span className="w-12 text-right font-mono text-xl font-medium text-black select-none">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="ml-6 text-lg text-black text-left">{q}</span>
+                </li>
+                <hr className="border-t border-neutral-300" />
+              </React.Fragment>
+            ))}
+            {/* Render extra empty dividers for future questions */}
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <React.Fragment key={questions.length + idx}>
+                <li className="h-10" />
+                <hr className="border-t border-neutral-300" />
+              </React.Fragment>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
