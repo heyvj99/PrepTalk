@@ -62,7 +62,9 @@ export function ActivityHistoryModal({
                   <span className="w-12 text-right font-mono text-xl font-medium text-black select-none">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="ml-6 text-lg text-black text-left">{q}</span>
+                  <span className="ml-6 text-lg text-black text-left">
+                    {q.text}
+                  </span>
                 </li>
                 <hr className="border-t border-neutral-300" />
               </React.Fragment>
