@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useSettings } from "./SettingsContext";
 
 const THINKING_OPTIONS = [
-  { label: "None", value: "none" },
+  { label: "None", value: 0 },
   { label: "30 sec", value: 30 },
   { label: "60 sec", value: 60 },
 ];
 
 const ANSWERING_OPTIONS = [
-  { label: "None", value: "none" },
+  { label: "None", value: 0 },
   { label: "1 min", value: 60 },
   { label: "2 min", value: 120 },
   { label: "3 min", value: 180 },
@@ -24,26 +25,43 @@ const TOPIC_OPTIONS = [
 export function SettingsModal({
   onClose,
   onSave,
-  initialThinking = "none",
-  initialAnswering = "none",
+  initialThinking = 0,
+  initialAnswering = 0,
   initialTopic = "all",
 }: {
   onClose: () => void;
   onSave: (settings: {
-    thinking: string | number;
-    answering: string | number;
+    thinking: number;
+    answering: number;
     topic: string;
   }) => void;
-  initialThinking?: string | number;
-  initialAnswering?: string | number;
+  initialThinking?: number;
+  initialAnswering?: number;
   initialTopic?: string;
 }) {
-  const [thinking, setThinking] = useState<string | number>(initialThinking);
-  const [answering, setAnswering] = useState<string | number>(initialAnswering);
+  const { setThinkingDuration, setAnsweringDuration } = useSettings();
+  const [thinking, setThinking] = useState<number>(initialThinking);
+  const [answering, setAnswering] = useState<number>(initialAnswering);
   const [topic, setTopic] = useState<string>(initialTopic);
 
+  // If answering is set to none, force thinking to none
+  const handleAnsweringChange = (val: number) => {
+    setAnswering(val);
+    if (val === 0) setThinking(0);
+  };
+
+  // If thinking is set to none, do not affect answering
+  const handleThinkingChange = (val: number) => {
+    setThinking(val);
+  };
+
   const handleSave = () => {
-    onSave({ thinking, answering, topic });
+    // If answering is none, force thinking to none
+    const finalAnswering = answering;
+    const finalThinking = finalAnswering === 0 ? 0 : thinking;
+    setThinkingDuration(finalThinking);
+    setAnsweringDuration(finalAnswering);
+    onSave({ thinking: finalThinking, answering: finalAnswering, topic });
   };
 
   return (
@@ -81,13 +99,15 @@ export function SettingsModal({
                   key={opt.value}
                   type="button"
                   aria-pressed={thinking === opt.value}
-                  onClick={() => setThinking(opt.value)}
+                  onClick={() => handleThinkingChange(opt.value)}
+                  disabled={answering === 0}
                   className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-colors
                     ${
                       thinking === opt.value
                         ? "bg-black text-white"
                         : "bg-white text-black hover:bg-neutral-100"
                     }
+                    ${answering === 0 ? "opacity-50 cursor-not-allowed" : ""}
                   `}
                 >
                   {opt.label}
@@ -105,7 +125,7 @@ export function SettingsModal({
                   key={opt.value}
                   type="button"
                   aria-pressed={answering === opt.value}
-                  onClick={() => setAnswering(opt.value)}
+                  onClick={() => handleAnsweringChange(opt.value)}
                   className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-colors
                     ${
                       answering === opt.value

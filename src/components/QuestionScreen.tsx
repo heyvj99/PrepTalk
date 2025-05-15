@@ -10,23 +10,22 @@ export function QuestionScreen() {
   const [questionIdx, setQuestionIdx] = useState(() =>
     Math.floor(Math.random() * questions.length)
   );
-  const [phase, setPhase] = useState<"thinking" | "answering">("thinking");
-  const [key, setKey] = useState(0); // for resetting timer
-  const { thinkingDuration, answeringDuration, soundEnabled } = useSettings();
+  const { thinkingDuration, answeringDuration } = useSettings();
   const { addEntry } = useActivityHistory();
   const [startTime, setStartTime] = useState(() => new Date());
 
-  const playSound = () => {
-    if (soundEnabled) {
-      const audio = new Audio(
-        "https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa1c82.mp3"
-      );
-      audio.play();
-    }
-  };
+  // Treat 0 as 'none' for both durations
+  const noAnswering = !answeringDuration;
+  const noThinking = !thinkingDuration;
+
+  // Determine initial phase
+  const initialPhase: "thinking" | "answering" = noThinking
+    ? "answering"
+    : "thinking";
+  const [phase, setPhase] = useState<"thinking" | "answering">(initialPhase);
+  const [key, setKey] = useState(0); // for resetting timer
 
   const handleTimerComplete = () => {
-    playSound();
     if (phase === "thinking") {
       setPhase("answering");
       setKey((k) => k + 1);
@@ -55,13 +54,13 @@ export function QuestionScreen() {
   };
 
   const goToPrev = () => {
-    setPhase("thinking");
+    setPhase(noThinking ? "answering" : "thinking");
     setQuestionIdx((idx) => (idx - 1 + questions.length) % questions.length);
     setKey((k) => k + 1);
     setStartTime(new Date());
   };
   const goToNext = () => {
-    setPhase("thinking");
+    setPhase(noThinking ? "answering" : "thinking");
     setQuestionIdx((idx) => (idx + 1) % questions.length);
     setKey((k) => k + 1);
     setStartTime(new Date());
@@ -75,7 +74,7 @@ export function QuestionScreen() {
           <span className="text-blue-700 font-bold text-sm mb-2 uppercase tracking-wide">
             Question
           </span>
-          <div className="flex flec-col justify-center items-start">
+          <div className="flex flex-col justify-center items-start">
             <p className="text-4xl font-bold leading-snug text-left text-black">
               {questions[questionIdx]}
             </p>
@@ -83,19 +82,21 @@ export function QuestionScreen() {
         </div>
         {/* Timer Section */}
         <div className="w-64 bg-neutral-100 flex flex-col items-start justify-start p-0">
-          <Timer
-            key={key}
-            duration={
-              phase === "thinking" ? thinkingDuration : answeringDuration
-            }
-            onComplete={handleTimerComplete}
-            phase={phase === "thinking" ? "Thinking" : "Answering"}
-            onSkip={handleSkip}
-          />
+          {!noAnswering && (
+            <Timer
+              key={key}
+              duration={
+                phase === "thinking" ? thinkingDuration : answeringDuration
+              }
+              onComplete={handleTimerComplete}
+              phase={phase === "thinking" ? "Thinking" : "Answering"}
+              onSkip={handleSkip}
+            />
+          )}
         </div>
       </div>
       {/* Navigation */}
-      <div className="flex gap-[2px] w-full max-w-3xl mt-6">
+      <div className="flex w-full max-w-3xl mt-6 gap-[2px]">
         <Button
           variant="secondary"
           className="flex-1 border-4 border-black rounded-none text-2xl h-[64px] font-extrabold bg-black hover:bg-neutral-900 text-white"

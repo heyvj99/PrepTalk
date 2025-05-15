@@ -3,10 +3,8 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 interface Settings {
   thinkingDuration: number;
   answeringDuration: number;
-  soundEnabled: boolean;
   setThinkingDuration: (v: number) => void;
   setAnsweringDuration: (v: number) => void;
-  setSoundEnabled: (v: boolean) => void;
 }
 
 const SettingsContext = createContext<Settings | undefined>(undefined);
@@ -16,7 +14,6 @@ const SETTINGS_KEY = "interview_settings";
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [thinkingDuration, setThinkingDuration] = useState(30);
   const [answeringDuration, setAnsweringDuration] = useState(120);
-  const [soundEnabled, setSoundEnabled] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem(SETTINGS_KEY);
@@ -25,27 +22,23 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       if (parsed.thinkingDuration) setThinkingDuration(parsed.thinkingDuration);
       if (parsed.answeringDuration)
         setAnsweringDuration(parsed.answeringDuration);
-      if (typeof parsed.soundEnabled === "boolean")
-        setSoundEnabled(parsed.soundEnabled);
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem(
       SETTINGS_KEY,
-      JSON.stringify({ thinkingDuration, answeringDuration, soundEnabled })
+      JSON.stringify({ thinkingDuration, answeringDuration })
     );
-  }, [thinkingDuration, answeringDuration, soundEnabled]);
+  }, [thinkingDuration, answeringDuration]);
 
   return (
     <SettingsContext.Provider
       value={{
         thinkingDuration,
         answeringDuration,
-        soundEnabled,
         setThinkingDuration,
         setAnsweringDuration,
-        setSoundEnabled,
       }}
     >
       {children}

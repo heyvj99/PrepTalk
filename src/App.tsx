@@ -1,10 +1,21 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { SettingsProvider } from "./components/SettingsContext";
+import { SettingsProvider, useSettings } from "./components/SettingsContext";
 import { ActivityHistoryProvider } from "./components/ActivityHistoryContext";
 import { Layout } from "./components/Layout";
 import { QuestionScreen } from "./components/QuestionScreen";
 import { SettingsModal } from "./components/Settings";
 import { ActivityHistory } from "./components/ActivityHistory";
+
+function SettingsModalWithContext(props: any) {
+  const { thinkingDuration, answeringDuration } = useSettings();
+  return (
+    <SettingsModal
+      initialThinking={thinkingDuration}
+      initialAnswering={answeringDuration}
+      {...props}
+    />
+  );
+}
 
 function App() {
   const navigate = useNavigate();
@@ -27,7 +38,7 @@ function App() {
             <Route
               path="settings"
               element={
-                <SettingsModal
+                <SettingsModalWithContext
                   onClose={handleSettingsClose}
                   onSave={handleSettingsSave}
                 />
