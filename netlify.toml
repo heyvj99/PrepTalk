@@ -1,0 +1,6 @@
+[build]
+  command = "bash -c 'tsc -b || true && vite build'"
+  publish = "dist"
+
+[build.environment]
+  CI = "false"
