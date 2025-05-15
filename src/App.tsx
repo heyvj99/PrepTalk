@@ -4,6 +4,8 @@ import { SettingsProvider, useSettings } from "./components/SettingsContext";
 import { Layout } from "./components/Layout";
 import { QuestionScreen } from "./components/QuestionScreen";
 import { SettingsModal } from "./components/Settings";
+import { usePageTracking } from "./usePageTracking.ts";
+
 // import { ActivityHistory } from "./components/ActivityHistory";
 
 function SettingsModalWithContext(props: any) {
@@ -18,6 +20,7 @@ function SettingsModalWithContext(props: any) {
 }
 
 function App() {
+  usePageTracking();
   const navigate = useNavigate();
 
   const handleSettingsSave = (settings: any) => {
