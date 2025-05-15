@@ -44,6 +44,7 @@
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
   --tw-color-black: oklch(0.24 0.0418 184.31);
+  /* the new black color is #012622 */
 }
 
 @theme inline {

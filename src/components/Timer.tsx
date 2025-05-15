@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play, RotateCcw, SkipForward } from "lucide-react";
+import { Pause, Play, RotateCcw, SkipForward, TimerOff } from "lucide-react";
 
 interface TimerProps {
   duration: number; // in seconds
@@ -92,7 +92,7 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
       <div className="flex gap-[2px] w-full">
         <button
           onClick={handlePause}
-          className="p-1 mx-auto flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
+          className="p-2 mx-auto flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
           title="Pause/Resume"
         >
           {paused ? (
@@ -103,17 +103,21 @@ export function Timer({ duration, onComplete, phase, onSkip }: TimerProps) {
         </button>
         <button
           onClick={handleReset}
-          className="p-1 flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
+          className="p-2 flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
           title="Reset"
         >
           <RotateCcw className="w-5 h-5" />
         </button>
         <button
           onClick={handleSkip}
-          className="p-1 flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
+          className="p-2 flex-1 border-2 border-black hover:bg-neutral-200 rounded-none flex items-center justify-center"
           title={phase === "Thinking" ? "Skip to Answering" : "Reset to 00:00"}
         >
-          <SkipForward className="w-5 h-5" />
+          {phase === "Answering" ? (
+            <TimerOff className="w-5 h-5" />
+          ) : (
+            <SkipForward className="w-5 h-5" />
+          )}
         </button>
       </div>
     </div>
