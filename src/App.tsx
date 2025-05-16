@@ -1,12 +1,13 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { SettingsProvider, useSettings } from "./components/SettingsContext";
-// import { ActivityHistoryProvider } from "./components/ActivityHistoryContext";
+import ReactGA from "react-ga4";
+import { useEffect } from "react";
 import { Layout } from "./components/Layout";
 import { QuestionScreen } from "./components/QuestionScreen";
 import { SettingsModal } from "./components/Settings";
-import { usePageTracking } from "./usePageTracking.ts";
+// import { usePageTracking } from "./usePageTracking.ts";
 
-// import { ActivityHistory } from "./components/ActivityHistory";
+ReactGA.initialize("G-CTQKYGERDJ");
 
 function SettingsModalWithContext(props: any) {
   const { thinkingDuration, answeringDuration } = useSettings();
@@ -20,7 +21,15 @@ function SettingsModalWithContext(props: any) {
 }
 
 function App() {
-  usePageTracking();
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname + location.search,
+    });
+  }, [location]);
+
   const navigate = useNavigate();
 
   const handleSettingsSave = (settings: any) => {
