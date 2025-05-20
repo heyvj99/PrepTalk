@@ -117,14 +117,14 @@ export function QuestionScreen() {
       <div className="flex w-full max-w-3xl mt-6 gap-[2px]">
         <Button
           variant="secondary"
-          className="flex-1 border-4 border-black rounded-none text-2xl h-[64px] font-extrabold bg-black hover:bg-black/95 text-white"
+          className="flex-1 border-4 border-black rounded-none text-2xl h-[64px] font-extrabold bg-black hover:bg-black/90 transition-all duration-200 text-white"
           onClick={goToPrev}
         >
           <ArrowLeft size={64} className="size-8" />
         </Button>
         <Button
           variant="secondary"
-          className="flex-1 border-4 border-black rounded-none text-2xl h-[64px] font-extrabold bg-black hover:bg-black/95 text-white"
+          className="flex-1 border-4 border-black rounded-none text-2xl h-[64px] font-extrabold bg-black hover:bg-black/90 transition-all duration-200 text-white"
           onClick={goToNext}
         >
           <ArrowRight size={64} className="size-8" />

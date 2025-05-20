@@ -101,10 +101,10 @@ export function SettingsModal({
                   aria-pressed={thinking === opt.value}
                   onClick={() => handleThinkingChange(opt.value)}
                   disabled={answering === 0}
-                  className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-colors
+                  className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-all duration-200
                     ${
                       thinking === opt.value
-                        ? "bg-black text-white"
+                        ? "bg-black text-white hover:bg-black/90"
                         : "bg-white text-black hover:bg-neutral-100"
                     }
                     ${answering === 0 ? "opacity-50 cursor-not-allowed" : ""}
@@ -126,10 +126,10 @@ export function SettingsModal({
                   type="button"
                   aria-pressed={answering === opt.value}
                   onClick={() => handleAnsweringChange(opt.value)}
-                  className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-colors
+                  className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-all duration-200
                     ${
                       answering === opt.value
-                        ? "bg-black text-white"
+                        ? "bg-black text-white hover:bg-black/90"
                         : "bg-white text-black hover:bg-neutral-100"
                     }
                   `}
@@ -153,10 +153,10 @@ export function SettingsModal({
                     type="button"
                     aria-pressed={topic === opt.value}
                     onClick={() => setTopic(opt.value)}
-                    className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-colors
+                    className={`px-5 py-2 rounded-full border-2 border-black text-base font-medium transition-all duration-200
                       ${
                         topic === opt.value
-                          ? "bg-black text-white"
+                          ? "bg-black text-white hover:bg-black/90"
                           : "bg-white text-black hover:bg-neutral-100"
                       }
                     `}
@@ -173,14 +173,14 @@ export function SettingsModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-8 py-2 border-2 border-black bg-white text-black font-medium rounded-none hover:bg-neutral-100 transition-colors"
+            className="px-8 py-2 border-2 border-black bg-white text-black font-medium rounded-none hover:bg-neutral-100 transition-all duration-200"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleSave}
-            className="px-8 py-2 border-2 border-black bg-black text-white font-medium rounded-none hover:bg-neutral-800 transition-colors"
+            className="px-8 py-2 border-2 border-black bg-black text-white font-medium rounded-none hover:bg-black/90 hover:scale-105 transition-all duration-200"
           >
             Save
           </button>

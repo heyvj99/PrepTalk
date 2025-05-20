@@ -25,14 +25,14 @@ export function ActivityHistoryModal({
           <div className="flex-1" />
           <div className="flex gap-0 items-center">
             <button
-              className="h-12 w-12 flex items-center justify-center bg-black text-white border-l-2 border-black focus:outline-none"
+              className="h-12 w-12 flex items-center justify-center bg-black text-white border-l-2 border-black hover:bg-black/90 transition-all duration-200 focus:outline-none"
               aria-label="History"
               onClick={onHistory}
             >
               <History className="w-6 h-6" />
             </button>
             <button
-              className="h-12 w-12 flex items-center justify-center bg-white text-black border-l-2 border-black focus:outline-none"
+              className="h-12 w-12 flex items-center justify-center bg-white text-black border-l-2 border-black hover:bg-neutral-100 transition-all duration-200 focus:outline-none"
               aria-label="Settings"
               onClick={onSettings}
             >
@@ -48,7 +48,7 @@ export function ActivityHistoryModal({
           <button
             aria-label="Close"
             onClick={onClose}
-            className="text-3xl font-bold text-black hover:text-neutral-600 focus:outline-none"
+            className="text-3xl font-bold text-black hover:text-neutral-600 transition-all duration-200 focus:outline-none"
           >
             &times;
           </button>

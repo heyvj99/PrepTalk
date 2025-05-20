@@ -16,7 +16,7 @@ export function Layout() {
             variant="ghost"
             size="icon"
             onClick={() => navigate("/settings")}
-            className="text-2xl border-2 border-black bg-white hover:bg-neutral-200 rounded-none"
+            className="text-2xl border-2 border-black bg-white hover:bg-neutral-200 hover:scale-105 transition-all duration-200 rounded-none"
           >
             <SettingsIcon className="h-6 w-6" />
           </Button>
